@@ -1,10 +1,11 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
+
 
 Rectangle{
     color: "lightgreen"
 
-    Text{
-        text: "Sidebar"
-        font.pixelSize: 26
+    Button{
+        text: "Button"
     }
 }
