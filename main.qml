@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
+import QtQuick.Layouts 1.15
 import "qml_components"
 
 Window{
@@ -8,7 +9,24 @@ Window{
     width: 1280
     height: 720
 
-    Navbar{}
-    Sidebar{x: 600}
-    MovieListView{y: 600}
+    ColumnLayout{
+        anchors.fill: parent
+
+        Navbar{
+            Layout.fillWidth: true
+            implicitHeight: 64
+        }
+
+        RowLayout{
+            Sidebar{
+                Layout.fillHeight: true
+                implicitWidth: 260
+            }
+            
+            MovieListView{
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+        }
+    }    
 }
