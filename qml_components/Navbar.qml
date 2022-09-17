@@ -16,7 +16,7 @@ Rectangle{
 
         Image{
             id: logo
-            source: "../resources/logo.svg"
+            source: Resources.get("logo.svg")
         }
 
         Text{

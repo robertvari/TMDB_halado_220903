@@ -3,6 +3,8 @@ from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
 
+from py_components.resources import Resources
+
 APP_ROOT = os.path.dirname(__file__)
 MAIN_QML = os.path.join(APP_ROOT, "main.qml")
 QQuickStyle.setStyle("Material")
@@ -14,6 +16,13 @@ class TMDB:
 
         # instance of QQmlApplicationEngine
         self.engine = QQmlApplicationEngine()
+
+        # get rootContext
+        self.context = self.engine.rootContext()
+
+        # insert my python objects into QML context
+        self.resources = Resources()
+        self.context.setContextProperty("Resources", self.resources)
 
         # load main.qml
         self.engine.load(MAIN_QML)
