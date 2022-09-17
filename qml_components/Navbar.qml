@@ -1,12 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+import "custom_widgets"
 
 Rectangle{
     id: root
     color: "#032541"
 
-    property int font_size: 20
-    property color text_color: "white"
+    // property int font_size: 20
+    // property color text_color: "white"
 
     RowLayout{
         anchors.fill: parent
@@ -19,33 +20,10 @@ Rectangle{
             source: Resources.get("logo.svg")
         }
 
-        Text{
-            text: "Movies"
-            font.bold: true
-            font.pixelSize: root.font_size
-            color: root.text_color
-        }
-
-        Text{
-            text: "TV Shows"
-            font.bold: true
-            font.pixelSize: root.font_size
-            color: root.text_color
-        }
-
-        Text{
-            text: "People"
-            font.bold: true
-            font.pixelSize: root.font_size
-            color: root.text_color
-        }
-
-        Text{
-            text: "More"
-            font.bold: true
-            font.pixelSize: root.font_size
-            color: root.text_color
-        }
+        TextButton{text: "Movies"}
+        TextButton{text: "TV Shows"}
+        TextButton{text: "People"}
+        TextButton{text: "More"}
 
         // spacer item
         Item{
