@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Rectangle{
-    color: "lightgray"
+    color: "#032541"
 
     Text{
         text: "Navbar"
