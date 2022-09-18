@@ -9,7 +9,7 @@ Item{
 
         model: 10
         cellWidth: 184
-        cellHeight: 362
+        cellHeight: 386
 
         delegate: MovieCard{
             width: movie_list_view.cellWidth - 10

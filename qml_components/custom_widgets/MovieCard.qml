@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 CustomRectangle{
     id: root
 
-    property string movie_title: "Prey"
+    property string movie_title: "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train"
     property string movie_date: "02 Aug 2022"
     property int movie_rating
     property string movie_id
@@ -32,7 +32,12 @@ CustomRectangle{
                 anchors.margins: 10
 
                 // Movie title
-                SubtitleText{text: movie_title}
+                SubtitleText{
+                    text: movie_title
+                    font.pixelSize: 14
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    Layout.fillWidth: true
+                }
 
                 Item{
                     Layout.fillHeight: true
