@@ -32,7 +32,7 @@ CustomRectangle{
                x: 10
                anchors.bottomMargin: -10
 
-               percentage: 55
+               percentage: movie_rating
             }
         }
 

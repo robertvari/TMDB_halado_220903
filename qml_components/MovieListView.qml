@@ -14,7 +14,10 @@ Item{
         delegate: MovieCard{
             width: movie_list_view.cellWidth - 10
             height: movie_list_view.cellHeight -10
-            title: movie_data.title
+            
+            movie_title: movie_data.title
+            movie_date: movie_data.release_date
+            movie_rating: movie_data.vote_average
         }
     }
 }

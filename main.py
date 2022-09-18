@@ -4,6 +4,8 @@ from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
 
 from py_components.resources import Resources
+from py_components.movie_list import MovieList
+
 
 APP_ROOT = os.path.dirname(__file__)
 MAIN_QML = os.path.join(APP_ROOT, "main.qml")
@@ -23,6 +25,9 @@ class TMDB:
         # insert my python objects into QML context
         self.resources = Resources()
         self.context.setContextProperty("Resources", self.resources)
+
+        self.movie_list = MovieList()
+        self.context.setContextProperty("MovieList", self.movie_list)
 
         # load main.qml
         self.engine.load(MAIN_QML)
