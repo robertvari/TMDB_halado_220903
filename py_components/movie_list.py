@@ -5,7 +5,12 @@ class MovieList(QAbstractListModel):
 
     def __init__(self):
         super().__init__()
-        self._movies = []
+        
+        self._movies = [
+            {"title": "Fall", "release_date": "2022-08-11", "vote_average": 74},
+            {"title": "Pinocchio", "release_date": "2022-09-07", "vote_average": 68},
+            {"title": "Beast", "release_date": "2022-08-11", "vote_average": 71}
+        ]
 
     def rowCount(self, parent=QModelIndex) -> int:
         return len(self._movies)
