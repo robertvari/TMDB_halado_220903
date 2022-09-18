@@ -8,7 +8,14 @@ Item{
         anchors.fill: parent
         anchors.leftMargin: 5
 
+        // Search by title
         IconTextField{id: search_by_title; placeholder_text: "Search by title"; icon: Resources.get("search.svg")}
+
+        // Sorting
+        CustomRectangle{
+            Layout.fillWidth: true
+            implicitHeight: 100
+        }
 
         // spacer
         Item{
