@@ -31,6 +31,8 @@ CustomRectangle{
                anchors.bottom: poster.bottom
                x: 10
                anchors.bottomMargin: -10
+
+               percentage: 100
             }
         }
 
