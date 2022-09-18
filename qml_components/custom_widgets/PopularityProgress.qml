@@ -11,7 +11,20 @@ Rectangle{
 
 
     // pie chart
+    Canvas{
+        id: mycanvas
+        width: parent.width
+        height: parent.height
 
+        onPaint: {
+            var ctx = getContext("2d");
+            ctx.reset()
+
+            var radiant = root.percentage * 0.062831853071796
+        }
+    }
+
+    // popularity text
     Rectangle{
         color: "gray"
         width: root.width -10
