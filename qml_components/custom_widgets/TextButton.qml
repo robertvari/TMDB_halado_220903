@@ -1,11 +1,14 @@
 import QtQuick 2.15
 
 Text{
+    id: root
     property color default_color: Qt.rgba(1, 1, 1, 0.7)
     property color highlight_color: Qt.rgba(1, 1, 1, 1)
+    property int font_size: 16
+    property bool bold_font: false
 
-    font.bold: true
-    font.pixelSize: 26
+    font.bold: root.bold_font
+    font.pixelSize: root.font_size
     color: default_color
 
     MouseArea{

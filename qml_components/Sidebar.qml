@@ -46,14 +46,21 @@ Item{
         // Genre filter
         CustomRectangle{
             Layout.fillWidth: true
-            implicitHeight: 100
+            implicitHeight: childrenRect.height + 20
 
             ColumnLayout{
-                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
                 anchors.margins: 10
 
                 SubtitleText{
                     text: "Genres"
+                }
+
+                Repeater{
+                    model: ["Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary", "Family"]
+                    TextButton{text: modelData; default_color: "black"; highlight_color: "gray"}
                 }
             }
         }
