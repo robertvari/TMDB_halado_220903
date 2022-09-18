@@ -11,7 +11,7 @@ Item{
         cellWidth: 184
         cellHeight: 362
 
-        delegate: CustomRectangle{
+        delegate: MovieCard{
             width: movie_list_view.cellWidth - 10
             height: movie_list_view.cellHeight -10
         }
