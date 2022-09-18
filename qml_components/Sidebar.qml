@@ -21,10 +21,8 @@ Item{
                 anchors.fill: parent
                 anchors.margins: 10
 
-                Text{
+                SubtitleText{
                     text: "Sort result by:"
-                    font.bold: true
-                    font.pixelSize: 16
                 }
 
                 ComboBox{
@@ -41,6 +39,21 @@ Item{
                     Layout.fillWidth: true
 
                     onActivated: print("Sort by:", currentText, currentIndex)
+                }
+            }
+        }
+
+        // Genre filter
+        CustomRectangle{
+            Layout.fillWidth: true
+            implicitHeight: 100
+
+            ColumnLayout{
+                anchors.fill: parent
+                anchors.margins: 10
+
+                SubtitleText{
+                    text: "Genres"
                 }
             }
         }
