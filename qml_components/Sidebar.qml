@@ -15,6 +15,31 @@ Item{
         CustomRectangle{
             Layout.fillWidth: true
             implicitHeight: 100
+
+            ColumnLayout{
+                anchors.fill: parent
+                anchors.margins: 10
+
+                Text{
+                    text: "Sort result by:"
+                    font.bold: true
+                    font.pixelSize: 16
+                }
+
+                ComboBox{
+                    model: [
+                        "Popularity Descending", 
+                        "Popularity Ascending",
+                        "Rating Descending",
+                        "Rating Ascending",
+                        "Release Date Descending",
+                        "Release Date Ascending",
+                        "Title (A-Z)",
+                        "Title (Z-A)"
+                    ]
+                    Layout.fillWidth: true
+                }
+            }
         }
 
         // spacer
