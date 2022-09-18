@@ -7,7 +7,7 @@ CustomRectangle{
 
     property string movie_title: "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train"
     property string movie_date: "02 Aug 2022"
-    property int movie_rating
+    property int movie_rating: 50
     property string movie_id
     property var movie_poster
 
@@ -16,10 +16,24 @@ CustomRectangle{
         spacing: 0
 
         // poster
-        Image{
-            source: Resources.get("poster.jpg")
-            sourceSize: Qt.size(root.width, 262)
+        Item{
+            id: poster_container
+            Layout.fillWidth: true
+            implicitHeight: 262
+
+            Image{
+                id: poster
+                source: Resources.get("poster.jpg")
+                sourceSize: Qt.size(poster_container.width, poster_container.height)
+            }
+
+            PopularityProgress{
+               anchors.bottom: poster.bottom
+               x: 10
+               anchors.bottomMargin: -10
+            }
         }
+
 
         // rating
         
