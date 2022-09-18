@@ -7,6 +7,7 @@ Item{
     ColumnLayout{
         anchors.fill: parent
         anchors.leftMargin: 5
+        spacing: 20
 
         // Search by title
         IconTextField{id: search_by_title; placeholder_text: "Search by title"; icon: Resources.get("search.svg")}
@@ -38,6 +39,8 @@ Item{
                         "Title (Z-A)"
                     ]
                     Layout.fillWidth: true
+
+                    onActivated: print("Sort by:", currentText, currentIndex)
                 }
             }
         }
