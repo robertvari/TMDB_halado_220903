@@ -8,6 +8,8 @@ Rectangle{
     radius: width
 
     property int percentage: 50
+    
+    onParentChanged: mycanvas.requestPaint()
 
 
     // pie chart
@@ -18,15 +20,27 @@ Rectangle{
 
         onPaint: {
             var ctx = getContext("2d");
-            ctx.reset()
 
             var radiant = root.percentage * 0.062831853071796
+            var centerX = width / 2
+            var centerY = height / 2
+            var radius = width / 2
+
+            ctx.reset()
+            ctx.beginPath();
+            ctx.fillStyle = root.percentage > 50 ? "lightgreen" : "yellow"
+
+            ctx.arc(centerX, centerY, radius, 0, radiant, false)
+            ctx.lineTo(centerX, centerY)
+            ctx.fill()
         }
+
+        rotation: -90
     }
 
     // popularity text
     Rectangle{
-        color: "gray"
+        color: root.color
         width: root.width -10
         height: width
         radius: width
