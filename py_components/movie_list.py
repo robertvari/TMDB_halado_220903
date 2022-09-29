@@ -94,7 +94,6 @@ class MovieListWorker(QRunnable):
         self.max_count = len(popular_movies)
         self.current_count = 0
         for movie_data in popular_movies:
-            time.sleep(0.1)
             movie_data = {
                 "title": movie_data.get("title"),
                 "release_date": movie_data.get("release_date"),
