@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls 2.15
 import "qml_components"
+import "qml_components/custom_widgets"
+
 
 ApplicationWindow{
     visible: true
@@ -27,9 +29,18 @@ ApplicationWindow{
                 implicitWidth: 260
             }
 
-            MovieListView{
+            ColumnLayout{
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                
+                DownloadProgress{
+                    Layout.fillWidth: true
+                }
+
+                MovieListView{
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
         }
     }    

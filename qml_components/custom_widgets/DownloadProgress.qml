@@ -1,0 +1,17 @@
+import QtQuick 2.15
+
+Item{
+    id: root
+    implicitHeight: 10
+    visible: MovieList.is_downloading
+
+    property int current_calue: MovieList.download_current_value
+    property int max_value: MovieList.download_max_count
+
+    Rectangle{
+        height: root.height
+        width: (root.width / root.max_value) * root.current_calue
+        color: "#05B4E3"
+        radius: root.height / 2
+    }
+}
