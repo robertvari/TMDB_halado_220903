@@ -13,7 +13,7 @@ class Resources(QObject):
         return QUrl().fromLocalFile(resource_path)
 
 
-def download_poster(url):
+def get_poster(url):
     if not os.path.exists(CACHE_FOLDER):
         os.makedirs(CACHE_FOLDER)
         
@@ -21,7 +21,7 @@ def download_poster(url):
     poster_path = os.path.join(CACHE_FOLDER, poster_file_name)
 
     if os.path.exists(poster_path):
-        return poster_path
+        return QUrl().fromLocalFile(poster_path)
 
     server_url = f"https://image.tmdb.org/t/p/w300{url}"
 
@@ -31,7 +31,7 @@ def download_poster(url):
     with open(poster_path, 'wb') as f:
         f.write(img_data)
 
-        return poster_path
+        return QUrl().fromLocalFile(poster_path)
 
 
 if __name__ == '__main__':
