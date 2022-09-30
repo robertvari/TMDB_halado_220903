@@ -65,7 +65,15 @@ Item{
 
                 Repeater {
                     model: MovieList.genre_list
-                    TextButton{text: modelData; default_color: "black"; highlight_color: "gray"; font_size: 14}
+                    TextButton{
+                        text: modelData
+                        default_color: "gray"
+                        highlight_color: "black"
+                        font_size: 14
+                        active_color: "black"
+                        state: MovieListProxy.current_genre === modelData? "active": ""
+                        onClicked: MovieListProxy.current_genre = modelData
+                    }
                 }
             }
         }

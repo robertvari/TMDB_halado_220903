@@ -6,6 +6,9 @@ from datetime import datetime
 tmdb.API_KEY = '83cbec0139273280b9a3f8ebc9e35ca9'
 tmdb.REQUESTS_TIMEOUT = 5
 
+genres = tmdb.Genres()
+movie_genres = genres.movie_list()["genres"]
+
 
 class MovieList(QAbstractListModel):
     DataRole = Qt.UserRole
@@ -17,9 +20,6 @@ class MovieList(QAbstractListModel):
         self.job_pool = QThreadPool()
         self.job_pool.setMaxThreadCount(1)
         self.movie_list_worker = MovieListWorker()
-
-        genres = tmdb.Genres()
-        self.movie_genres = genres.movie_list()["genres"]
 
         self._movies = []
         self._fetch_movies()
@@ -71,7 +71,7 @@ class MovieList(QAbstractListModel):
         return self.movie_list_worker.current_count
 
     def _get_genre_list(self):
-        return [i["name"] for i in self.movie_genres]
+        return [i["name"] for i in movie_genres]
 
     is_downloading = Property(bool, _get_is_downloading, notify=download_progress_changed)
     download_max_count = Property(int, _get_download_max_count, notify=download_progress_changed)
@@ -79,11 +79,14 @@ class MovieList(QAbstractListModel):
     genre_list = Property(list, _get_genre_list, constant=True)
 
 class MovieListProxy(QSortFilterProxyModel):
+    genre_changed = Signal()
+
     def __init__(self):
         super(MovieListProxy, self).__init__()
         self.sort(0, Qt.AscendingOrder)
 
         self._filter = ""
+        self._genre = None
     
     @Slot(str)
     def set_filter(self, movie_name):
@@ -92,7 +95,26 @@ class MovieListProxy(QSortFilterProxyModel):
     
     def filterAcceptsRow(self, source_row, source_parent):
         movie_data = self.sourceModel().movies[source_row]
+
+        if self._genre:
+            return (self._filter.lower() in movie_data["title"].lower()) and (self._genre in movie_data["genres"])
+
         return self._filter.lower() in movie_data["title"].lower()
+    
+    @Slot(str)
+    def _set_current_genre(self, new_genre):
+        if new_genre == self._genre:
+            self._genre = None
+        else:
+            self._genre = new_genre
+
+        self.genre_changed.emit()
+        self.invalidateFilter()
+
+    def _get_current_genre(self):
+        return self._genre
+
+    current_genre = Property(str, _get_current_genre, _set_current_genre, notify=genre_changed)
 
 
 class WorkerSignals(QObject):
@@ -113,6 +135,18 @@ class MovieListWorker(QRunnable):
         self.max_count = 0
         self.current_count = 0
 
+    def _get_genres(self, id_list):
+        if not id_list:
+            return []
+
+        result = []
+        for id in id_list:
+            for data in movie_genres:
+                if data["id"] == id:
+                    result.append(data["name"])
+
+        return result
+
     def run(self):
         self.is_working = True
         self.signals.task_started.emit()
@@ -128,7 +162,8 @@ class MovieListWorker(QRunnable):
                 "release_date": datetime_obj.strftime("%Y %b %d").lower(),
                 "date": datetime_obj,
                 "vote_average": int(movie_data.get("vote_average") * 10),
-                "poster": get_poster(movie_data.get("poster_path"))
+                "poster": get_poster(movie_data.get("poster_path")),
+                "genres": self._get_genres(movie_data.get("genre_ids"))
             }
 
             self.current_count += 1

@@ -33,7 +33,7 @@ Text{
 
     MouseArea{
         anchors.fill: parent
-        cursorShape: if(root.state !== "active") Qt.PointingHandCursor
+        cursorShape: Qt.PointingHandCursor
 
         hoverEnabled: true
         onEntered: if(root.state !== "active") parent.color = parent.highlight_color
