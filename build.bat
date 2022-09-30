@@ -1,0 +1,1 @@
+pyinstaller --add-data "resources;resources" --add-data "main.qml;." --add-data "qml_components;qml_components" --onefile --windowed --hidden-import PySide2.QtQuick .\main.py
