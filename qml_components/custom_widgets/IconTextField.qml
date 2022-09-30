@@ -38,7 +38,7 @@ Rectangle{
             }
 
             // onAccepted: print("Search:", text)
-            onAccepted: root.accepted(text)
+            onTextChanged: root.accepted(text)
         }
     }
 }
