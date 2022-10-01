@@ -1,5 +1,7 @@
 from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex
 import tmdbsimple as tmdb
+from py_components.resources import get_poster
+
 tmdb.API_KEY = '83cbec0139273280b9a3f8ebc9e35ca9'
 tmdb.REQUESTS_TIMEOUT = 5
 
@@ -23,6 +25,7 @@ class MovieList(QAbstractListModel):
                 "title": movie_data.get("title"),
                 "release_date": movie_data.get("release_date"),
                 "vote_average": int(movie_data.get("vote_average") * 10),
+                "poster": get_poster(movie_data.get("poster_path"))
             })
 
     def _reset(self):

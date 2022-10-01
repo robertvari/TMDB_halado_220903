@@ -23,7 +23,7 @@ CustomRectangle{
 
             Image{
                 id: poster
-                source: Resources.get("poster.jpg")
+                source: root.movie_poster
                 sourceSize: Qt.size(poster_container.width, poster_container.height)
             }
 
