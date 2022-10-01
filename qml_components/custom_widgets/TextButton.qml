@@ -11,6 +11,8 @@ Text{
     font.pixelSize: root.font_size
     color: default_color
 
+    signal clicked
+
     MouseArea{
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
@@ -19,7 +21,6 @@ Text{
         onEntered: parent.color = parent.highlight_color
         onExited: parent.color = parent.default_color
 
-        onClicked: print("clicked:", parent.text)
-        
+        onClicked: root.clicked()
     }
 }
