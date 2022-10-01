@@ -1,5 +1,5 @@
 from PySide2.QtCore import QObject, Slot, QUrl
-import os, requests
+import os, requests, time
 from os.path import expanduser
 
 RESOURCES_PATH = os.path.dirname(__file__).replace("py_components", "resources")
@@ -15,6 +15,9 @@ class Resources(QObject):
 
 
 def get_poster(url):
+    print(f"Downloading: {url}")
+    time.sleep(1)
+    
     # create cache folder if doesn't exist
     if not os.path.exists(CACHE_FOLDER):
         os.makedirs(CACHE_FOLDER)
