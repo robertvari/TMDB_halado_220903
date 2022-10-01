@@ -1,7 +1,10 @@
 from PySide2.QtCore import QObject, Slot, QUrl
 import os, requests
+from os.path import expanduser
 
 RESOURCES_PATH = os.path.dirname(__file__).replace("py_components", "resources")
+CACHE_FOLDER = os.path.join(expanduser("~"), "TMDB_CACHE")
+
 
 class Resources(QObject):
     @Slot(str, result=QUrl)
@@ -11,13 +14,13 @@ class Resources(QObject):
         return QUrl().fromLocalFile(resource_path)
 
 
-def download_poster(url, cache_folder):
+def download_poster(url):
     # create cache folder if doesn't exist
-    if not os.path.exists(cache_folder):
-        os.makedirs(cache_folder)
+    if not os.path.exists(CACHE_FOLDER):
+        os.makedirs(CACHE_FOLDER)
     
     poster_file_name = url[1:]
-    poster_path = os.path.join(cache_folder, poster_file_name)
+    poster_path = os.path.join(CACHE_FOLDER, poster_file_name)
     
     # if this poster already cached return local path
     if os.path.exists(poster_path):
@@ -36,4 +39,4 @@ def download_poster(url, cache_folder):
 
 
 if __name__ == "__main__":
-    download_poster("/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg", r"C:\Work\_PythonSuli\halado-220903\tmp")
+    download_poster("/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg")
