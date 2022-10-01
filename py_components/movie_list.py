@@ -8,6 +8,7 @@ tmdb.REQUESTS_TIMEOUT = 5
 
 class MovieList(QAbstractListModel):
     DataRole = Qt.UserRole
+    download_progress_changed = Signal()
 
     def __init__(self):
         super().__init__()
@@ -51,6 +52,8 @@ class MovieList(QAbstractListModel):
 
 class WorkerSignals(QObject):
     movie_data_downloaded = Signal(dict)
+    task_started = Signal()
+    task_finished = Signal()
 
     def __init__(self):
         super().__init__()
@@ -61,10 +64,17 @@ class MovieListWorker(QRunnable):
         super().__init__()
         self.signals = WorkerSignals()
         self.tmdb_movies = tmdb.Movies()
+        
+        self.is_working = False
+        self.max_count = 0
+        self.current_count = 0
 
     def run(self):
+        self.is_working = True
+        self.signals.task_started.emit()
+
         popular_movies = self.tmdb_movies.popular(page=1)["results"]
-        
+        self.max_count = len(popular_movies)
         for movie_data in popular_movies:
             movie_data = {
                 "title": movie_data.get("title"),
@@ -73,4 +83,8 @@ class MovieListWorker(QRunnable):
                 "poster": get_poster(movie_data.get("poster_path"))
             }
 
+            self.current_count += 1
             self.signals.movie_data_downloaded.emit(movie_data)
+        
+        self.is_working = False
+        self.signals.task_finished.emit()
