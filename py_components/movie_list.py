@@ -2,6 +2,7 @@ from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, Signal,
 import tmdbsimple as tmdb
 from py_components.resources import get_poster
 import time
+from datetime import datetime
 
 tmdb.API_KEY = '83cbec0139273280b9a3f8ebc9e35ca9'
 tmdb.REQUESTS_TIMEOUT = 5
@@ -95,9 +96,12 @@ class MovieListWorker(QRunnable):
         popular_movies = self.tmdb_movies.popular(page=1)["results"]
         self.max_count = len(popular_movies)
         for movie_data in popular_movies:
+            datetime_obj = datetime.strptime(movie_data.get("release_date"), "%Y-%m-%d")
+
             movie_data = {
                 "title": movie_data.get("title"),
-                "release_date": movie_data.get("release_date"),
+                "release_date": datetime_obj.strftime("%Y %b. %d"),
+                "date": datetime_obj,
                 "vote_average": int(movie_data.get("vote_average") * 10),
                 "poster": get_poster(movie_data.get("poster_path"))
             }
