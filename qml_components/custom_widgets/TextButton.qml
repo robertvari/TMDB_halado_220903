@@ -12,6 +12,7 @@ Text{
     font.pixelSize: root.font_size
     color: default_color
 
+    // custom signal
     signal clicked
 
     states: [
@@ -39,6 +40,7 @@ Text{
         onEntered: if(root.state !== "active") parent.color = parent.highlight_color
         onExited: if(root.state !== "active") parent.color = parent.default_color
 
+        // call root.clicked
         onClicked: root.clicked()
     }
 }
