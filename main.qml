@@ -16,6 +16,9 @@ ApplicationWindow{
 
     ColumnLayout{
         anchors.fill: parent
+        state: "movies"
+
+
 
         Navbar{
             Layout.fillWidth: true
@@ -36,10 +39,10 @@ ApplicationWindow{
                     Layout.fillWidth: true
                 }
 
-                MovieListView{
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
+                MovieListView{Layout.fillWidth: true; Layout.fillHeight: true}
+                TVShowsView{Layout.fillWidth: true; Layout.fillHeight: true}
+                PeoplesView{Layout.fillWidth: true; Layout.fillHeight: true}
+                MoreView{Layout.fillWidth: true; Layout.fillHeight: true}
             }
         }
     }    
