@@ -1,6 +1,7 @@
-from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, Signal, QRunnable, QThreadPool
+from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, Signal, QRunnable, QThreadPool, Property
 import tmdbsimple as tmdb
 from py_components.resources import get_poster
+import time
 
 tmdb.API_KEY = '83cbec0139273280b9a3f8ebc9e35ca9'
 tmdb.REQUESTS_TIMEOUT = 5
@@ -39,7 +40,6 @@ class MovieList(QAbstractListModel):
         self._movies.append(movie_data)
         self.endInsertRows()
 
-
     def rowCount(self, parent=QModelIndex) -> int:
         return len(self._movies)
 
@@ -52,6 +52,13 @@ class MovieList(QAbstractListModel):
         row = index.row()
         if role == MovieList.DataRole:
             return self._movies[row]
+
+    def _get_is_downloading(self):
+        return self.movie_list_worker.is_working
+
+    # Python property for QML item types
+    # name           Property type      getter method   optional setter    signal
+    is_downloading = Property(bool, _get_is_downloading, notify=download_progress_changed)
 
 
 class WorkerSignals(QObject):
