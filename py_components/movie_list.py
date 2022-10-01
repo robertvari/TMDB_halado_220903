@@ -14,14 +14,13 @@ class MovieList(QAbstractListModel):
 
         self.job_pool = QThreadPool()
         self.job_pool.setMaxThreadCount(1)
+        self.movie_list_worker = MovieListWorker()
 
         self._movies = []
         self._fetch_movies()
 
     def _fetch_movies(self):
         self._reset()
-
-        self.movie_list_worker = MovieListWorker()
         self.movie_list_worker.signals.movie_data_downloaded.connect(self._inser_movie)
         self.job_pool.start(self.movie_list_worker)
 
