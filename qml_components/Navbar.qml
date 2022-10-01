@@ -20,10 +20,10 @@ Rectangle{
             source: Resources.get("logo.svg")
         }
 
-        TextButton{text: "Movies"; bold_font: true; font_size: 18; onClicked: app_layout.state="movies"}
-        TextButton{text: "TV Shows"; bold_font: true; font_size: 18; onClicked: app_layout.state="tvshows"}
-        TextButton{text: "People"; bold_font: true; font_size: 18; onClicked: app_layout.state="peoples"}
-        TextButton{text: "More"; bold_font: true; font_size: 18; onClicked: app_layout.state="more"}
+        TextButton{text: "Movies"; bold_font: true; font_size: 18; onClicked: app_layout.state="movies"; state: app_layout.state === "movies"? "active" : ""}
+        TextButton{text: "TV Shows"; bold_font: true; font_size: 18; onClicked: app_layout.state="tvshows"; state: app_layout.state === "tvshows"? "active" : ""}
+        TextButton{text: "People"; bold_font: true; font_size: 18; onClicked: app_layout.state="peoples"; state: app_layout.state === "peoples"? "active" : ""}
+        TextButton{text: "More"; bold_font: true; font_size: 18; onClicked: app_layout.state="more"; state: app_layout.state === "more"? "active" : ""}
 
         // spacer item
         Item{
