@@ -21,6 +21,10 @@ class MovieList(QAbstractListModel):
     def _fetch_movies(self):
         self._reset()
 
+        self.movie_list_worker = MovieListWorker()
+        self.movie_list_worker.signals.movie_data_downloaded.connect(self._inser_movie)
+        self.job_pool.start(self.movie_list_worker)
+
     def _reset(self):
         self.beginResetModel()
         self._movies.clear()
@@ -51,6 +55,7 @@ class WorkerSignals(QObject):
 
     def __init__(self):
         super().__init__()
+
 
 class MovieListWorker(QRunnable):
     def __init__(self):
