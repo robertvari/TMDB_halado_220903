@@ -22,7 +22,10 @@ class MovieList(QAbstractListModel):
 
     def _fetch_movies(self):
         self._reset()
+
         self.movie_list_worker.signals.movie_data_downloaded.connect(self._inser_movie)
+        self.movie_list_worker.signals.task_started.connect(self.download_progress_changed)
+        self.movie_list_worker.signals.task_finished.connect(self.download_progress_changed)
         self.job_pool.start(self.movie_list_worker)
 
     def _reset(self):
@@ -31,6 +34,7 @@ class MovieList(QAbstractListModel):
         self.endResetModel()
 
     def _inser_movie(self, movie_data):
+        self.download_progress_changed.emit()
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._movies.append(movie_data)
         self.endInsertRows()
