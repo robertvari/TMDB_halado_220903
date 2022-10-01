@@ -56,9 +56,17 @@ class MovieList(QAbstractListModel):
     def _get_is_downloading(self):
         return self.movie_list_worker.is_working
 
+    def _get_download_max_count(self):
+        return self.movie_list_worker.max_count
+    
+    def _get_download_current_value(self):
+        return self.movie_list_worker.current_count
+
     # Python property for QML item types
     # name           Property type      getter method   optional setter    signal
     is_downloading = Property(bool, _get_is_downloading, notify=download_progress_changed)
+    download_max_count = Property(int, _get_download_max_count, notify=download_progress_changed)
+    download_current_value = Property(int, _get_download_current_value, notify=download_progress_changed)
 
 
 class WorkerSignals(QObject):
