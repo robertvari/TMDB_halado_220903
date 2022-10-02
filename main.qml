@@ -10,6 +10,7 @@ ApplicationWindow{
     title: "The Movie Database"
     width: 1280
     height: 720
+    visibility: "Maximized"
 
     Material.theme: Material.Light
     Material.accent: Material.LightBlue
