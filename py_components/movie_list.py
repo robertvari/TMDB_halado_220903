@@ -20,6 +20,8 @@ class MovieList(QAbstractListModel):
         self.job_pool.setMaxThreadCount(1)
         self.movie_list_worker = MovieListWorker()
 
+        self._movie_genres = tmdb.Genres().movie_list()["genres"]
+
         self._movies = []
         self._fetch_movies()
 
@@ -67,12 +69,17 @@ class MovieList(QAbstractListModel):
     
     def _get_download_current_value(self):
         return self.movie_list_worker.current_count
+    
+    def _get_genre_list(self):
+        return [i["name"] for i in self._movie_genres]
 
     # Python property for QML item types
     # name           Property type      getter method   optional setter    signal
     is_downloading = Property(bool, _get_is_downloading, notify=download_progress_changed)
     download_max_count = Property(int, _get_download_max_count, notify=download_progress_changed)
     download_current_value = Property(int, _get_download_current_value, notify=download_progress_changed)
+    genre_list = Property(list, _get_genre_list, constant=True)
+
 
 class MovieListProxy(QSortFilterProxyModel):
     def __init__(self):
@@ -121,7 +128,8 @@ class MovieListWorker(QRunnable):
                 "release_date": datetime_obj.strftime("%Y %b. %d"),
                 "date": datetime_obj,
                 "vote_average": int(movie_data.get("vote_average") * 10),
-                "poster": get_poster(movie_data.get("poster_path"))
+                "poster": get_poster(movie_data.get("poster_path")),
+                "genres": []
             }
 
             self.current_count += 1

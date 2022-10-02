@@ -64,7 +64,7 @@ Item{
                 }
 
                 Repeater{
-                    model: ["Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary", "Family"]
+                    model: MovieList.genre_list
                     TextButton{text: modelData; default_color: "black"; highlight_color: "gray"}
                 }
             }
