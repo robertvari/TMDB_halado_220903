@@ -45,7 +45,6 @@ class TMDB:
         sys.exit(self.app.exec_())
     
     def _close_app(self):
-        print("Closing threads...")
         self.movie_list.movie_list_worker.stop()
 
 if __name__ == "__main__":
