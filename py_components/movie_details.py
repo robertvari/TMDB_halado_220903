@@ -19,7 +19,7 @@ class MovieDetails(QObject):
 
     def _get_title(self):
         if self._movie_data:
-            return self._movie_data.get("title")
+            return f"{self._movie_data.get('title')} ({self._get_date_obj().strftime('%Y')})"
         return ""
 
     def _get_overview(self):
@@ -35,7 +35,7 @@ class MovieDetails(QObject):
     def _get_genres(self):
         if self._movie_data:
             genre_names = [i["name"] for i in self._movie_data.get("genres")]
-            return ", ".joint(genre_names)
+            return ", ".join(genre_names)
         return ""
 
     def _get_poster(self):
