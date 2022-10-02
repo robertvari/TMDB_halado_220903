@@ -12,6 +12,9 @@ Rectangle{
     property string placeholder_text: ""
     property var icon: ""
 
+    signal changed(string field_text)
+    signal accepted(string field_text)
+
     RowLayout{
         anchors.fill: parent
         anchors.margins: 2
@@ -35,7 +38,8 @@ Rectangle{
                 color: "transparent"
             }
 
-            onAccepted: print("Search:", text)
+            onTextChanged: root.changed(text)
+            onAccepted: root.accepted(text)
         }
     }
 }
