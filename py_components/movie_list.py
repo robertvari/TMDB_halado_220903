@@ -1,4 +1,5 @@
-from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, Signal, QRunnable, QThreadPool, Property
+from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, \
+    QObject, Signal, QRunnable, QThreadPool, Property, QSortFilterProxyModel, Slot
 import tmdbsimple as tmdb
 from py_components.resources import get_poster
 import time
@@ -69,6 +70,14 @@ class MovieList(QAbstractListModel):
     download_max_count = Property(int, _get_download_max_count, notify=download_progress_changed)
     download_current_value = Property(int, _get_download_current_value, notify=download_progress_changed)
 
+class MovieListProxy(QSortFilterProxyModel):
+    def __init__(self):
+        super().__init__()
+        self._filter = ""
+    
+    @Slot(str)
+    def set_filter(self, search_string):
+        print("MovieListProxy", search_string)
 
 class WorkerSignals(QObject):
     movie_data_downloaded = Signal(dict)
