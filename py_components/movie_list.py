@@ -90,6 +90,14 @@ class MovieListProxy(QSortFilterProxyModel):
         super().__init__()
         self._filter = ""
         self._genre = None
+        self._sorting_options = [
+            "Rating Descending",
+            "Rating Ascending",
+            "Release Date Descending",
+            "Release Date Ascending",
+            "Title (A-Z)",
+            "Title (Z-A)"
+        ]
     
     @Slot(str)
     def set_filter(self, search_string):
