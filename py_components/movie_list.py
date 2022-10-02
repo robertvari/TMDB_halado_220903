@@ -2,6 +2,7 @@ from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, Signal,
 import tmdbsimple as tmdb
 from py_components.resources import get_poster
 from datetime import datetime
+import time
 
 tmdb.API_KEY = '83cbec0139273280b9a3f8ebc9e35ca9'
 tmdb.REQUESTS_TIMEOUT = 5
@@ -190,6 +191,9 @@ class MovieListWorker(QRunnable):
 
         return result
 
+    def stop(self):
+        self.is_working = False
+
     def run(self):
         self.is_working = True
         self.signals.task_started.emit()
@@ -198,6 +202,12 @@ class MovieListWorker(QRunnable):
         self.max_count = len(popular_movies)
         self.current_count = 0
         for movie_data in popular_movies:
+            if not self.is_working:
+                print("Download process stopped!")
+                break
+
+            print(f"get data for {movie_data.get('title')}")
+            time.sleep(1)
             datetime_obj = datetime.strptime(movie_data.get("release_date"), "%Y-%m-%d")
 
             movie_data = {

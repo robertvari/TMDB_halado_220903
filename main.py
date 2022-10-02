@@ -39,8 +39,15 @@ class TMDB:
         if not self.engine.rootObjects:
             sys.exit(-1)
         
+        # handle threads when app closed
+        self.app.lastWindowClosed.connect(self._close_app)
+
         # hold window open till user click close button
         sys.exit(self.app.exec_())
+
+    def _close_app(self):
+        print("Closing treads...")
+        self.movie_list.movie_list_worker.stop()
 
 if __name__ == "__main__":
     TMDB()
