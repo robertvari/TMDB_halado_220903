@@ -208,6 +208,7 @@ class MovieListWorker(QRunnable):
             datetime_obj = datetime.strptime(movie_data.get("release_date"), "%Y-%m-%d")
 
             movie_data = {
+                "id": movie_data.get("id"),
                 "title": movie_data.get("title"),
                 "release_date": datetime_obj.strftime("%Y %b. %d"),
                 "date": datetime_obj,

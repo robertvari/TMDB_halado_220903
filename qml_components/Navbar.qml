@@ -18,6 +18,12 @@ Rectangle{
         Image{
             id: logo
             source: Resources.get("logo.svg")
+
+            MouseArea{
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: app_layout.state = "movies"
+            }
         }
 
         TextButton{text: "Movies"; bold_font: true; font_size: 18; onClicked: app_layout.state="movies"; state: app_layout.state === "movies"? "active" : ""}

@@ -64,4 +64,11 @@ CustomRectangle{
             }
         }
     }
+
+    MouseArea{
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+
+        onClicked: app_layout.state = "movie_details"
+    }
 }
