@@ -203,14 +203,12 @@ class MovieListWorker(QRunnable):
         self.current_count = 0
         for movie_data in popular_movies:
             if not self.is_working:
-                print("Download process stopped!")
                 break
 
-            print(f"get data for {movie_data.get('title')}")
-            time.sleep(1)
             datetime_obj = datetime.strptime(movie_data.get("release_date"), "%Y-%m-%d")
 
             movie_data = {
+                "id": movie_data.get("id"),
                 "title": movie_data.get("title"),
                 "release_date": datetime_obj.strftime("%Y %b %d").lower(),
                 "date": datetime_obj,

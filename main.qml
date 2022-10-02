@@ -48,6 +48,17 @@ ApplicationWindow{
                     target: more_view
                     visible: true
                 }
+            },
+            State {
+                name: "movie_details"
+                PropertyChanges{
+                    target: list_view_layout
+                    visible: false
+                }
+                PropertyChanges{
+                    target: movie_details_view
+                    visible: true
+                }
             }
         ]
 
@@ -56,7 +67,11 @@ ApplicationWindow{
             implicitHeight: 64
         }
 
+        MovieDetailsView{id: movie_details_view; Layout.fillWidth: true; Layout.fillHeight: true; visible: false}
+
         RowLayout{
+            id: list_view_layout
+
             Sidebar{
                 Layout.fillHeight: true
                 implicitWidth: 260
