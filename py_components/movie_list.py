@@ -85,9 +85,12 @@ class MovieList(QAbstractListModel):
 
 class MovieListProxy(QSortFilterProxyModel):
     genre_changed = Signal()
+    sorting_changed = Signal()
 
     def __init__(self):
         super().__init__()
+        self.sort(0, Qt.AscendingOrder)
+
         self._filter = ""
         self._genre = None
         self._sorting_options = [
@@ -98,6 +101,7 @@ class MovieListProxy(QSortFilterProxyModel):
             "Title (A-Z)",
             "Title (Z-A)"
         ]
+        self._current_sorting = self._sorting_options[0]
     
     @Slot(str)
     def set_filter(self, search_string):
@@ -112,6 +116,23 @@ class MovieListProxy(QSortFilterProxyModel):
 
         return self._filter.lower() in movie_data["title"].lower()
     
+    def lessThan(self, source_left, source_right):
+        left_movie = self.sourceModel().data(source_left, Qt.UserRole)
+        right_movie = self.sourceModel().data(source_right, Qt.UserRole)
+
+        if self._current_sorting == self._sorting_options[0]:
+            return left_movie["vote_average"] > right_movie["vote_average"]
+        elif self._current_sorting == self._sorting_options[1]:
+            return left_movie["vote_average"] < right_movie["vote_average"]
+        elif self._current_sorting == self._sorting_options[2]:
+            return left_movie["date"] > right_movie["date"]
+        elif self._current_sorting == self._sorting_options[3]:
+            return left_movie["date"] < right_movie["date"]
+        elif self._current_sorting == self._sorting_options[4]:
+            return left_movie["title"] < right_movie["title"]
+        elif self._current_sorting == self._sorting_options[5]:
+            return left_movie["title"] > right_movie["title"]
+
     def _get_current_genre(self):
         return self._genre
 
@@ -124,7 +145,22 @@ class MovieListProxy(QSortFilterProxyModel):
         self.invalidateFilter()
         self.genre_changed.emit()
 
+    def _get_sorting_option(self):
+        return self._sorting_options
+
+    def _get_current_sorting(self):
+        return self._current_sorting
+
+    @Slot(str)
+    def _set_current_sorting(self, new_sorting):
+        self._current_sorting = new_sorting
+        self.sorting_changed.emit()
+        self.invalidate()
+
     current_genre = Property(str, _get_current_genre, _set_current_genre, notify=genre_changed)
+    sorting_options = Property(list, _get_sorting_option, constant=True)
+    current_sorting = Property(str, _get_current_sorting, _set_current_sorting, notify=sorting_changed)
+
 
 class WorkerSignals(QObject):
     movie_data_downloaded = Signal(dict)
