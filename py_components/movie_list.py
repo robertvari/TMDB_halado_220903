@@ -1,3 +1,4 @@
+from tkinter.messagebox import NO
 from PySide2.QtCore import QAbstractListModel, Qt, QModelIndex, \
     QObject, Signal, QRunnable, QThreadPool, Property, QSortFilterProxyModel, Slot
 import tmdbsimple as tmdb
@@ -82,9 +83,12 @@ class MovieList(QAbstractListModel):
 
 
 class MovieListProxy(QSortFilterProxyModel):
+    genre_changed = Signal()
+
     def __init__(self):
         super().__init__()
         self._filter = ""
+        self._genre = None
     
     @Slot(str)
     def set_filter(self, search_string):
@@ -94,6 +98,18 @@ class MovieListProxy(QSortFilterProxyModel):
     def filterAcceptsRow(self, source_row, source_parent):
         movie_data = self.sourceModel().movies[source_row]
         return self._filter.lower() in movie_data["title"].lower()
+    
+    def _get_current_genre(self):
+        return self._genre
+
+    def _set_current_genre(self, new_genre):
+        if new_genre == self._genre:
+            self._genre = None
+        else:
+            self._genre = new_genre
+        self.genre_changed.emit()
+
+    current_genre = Property(str, _get_current_genre, _set_current_genre, notify=genre_changed)
 
 class WorkerSignals(QObject):
     movie_data_downloaded = Signal(dict)
