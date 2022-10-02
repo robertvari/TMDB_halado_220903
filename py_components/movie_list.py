@@ -23,6 +23,10 @@ class MovieList(QAbstractListModel):
         self._movies = []
         self._fetch_movies()
 
+    @property
+    def movies(self):
+        return self._movies
+
     def _fetch_movies(self):
         self._reset()
 
@@ -77,7 +81,12 @@ class MovieListProxy(QSortFilterProxyModel):
     
     @Slot(str)
     def set_filter(self, search_string):
-        print("MovieListProxy", search_string)
+        self._filter = search_string
+        self.invalidateFilter()
+    
+    def filterAcceptsRow(self, source_row, source_parent):
+        movie_data = self.sourceModel().movies[source_row]
+        return self._filter.lower() in movie_data["title"].lower()
 
 class WorkerSignals(QObject):
     movie_data_downloaded = Signal(dict)

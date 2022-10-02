@@ -14,7 +14,7 @@ Item{
             id: search_by_title
             placeholder_text: "Search by title"
             icon: Resources.get("search.svg")
-            onChanged: print("Search", field_text)
+            onChanged: MovieListProxy.set_filter(field_text)
         }
 
         // Sorting

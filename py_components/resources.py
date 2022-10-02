@@ -15,7 +15,7 @@ class Resources(QObject):
 
 
 def get_poster(url):
-    time.sleep(0.1)
+    # time.sleep(0.1)
 
     # create cache folder if doesn't exist
     if not os.path.exists(CACHE_FOLDER):

@@ -7,7 +7,7 @@ Item{
         id: movie_list_view
         clip: true
 
-        model: MovieList
+        model: MovieListProxy
         cellWidth: 184
         cellHeight: 386
 
