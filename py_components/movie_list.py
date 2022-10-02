@@ -22,8 +22,6 @@ class MovieList(QAbstractListModel):
         self.job_pool.setMaxThreadCount(1)
         self.movie_list_worker = MovieListWorker()
 
-        
-
         self._movies = []
         self._fetch_movies()
 
@@ -194,6 +192,9 @@ class MovieListWorker(QRunnable):
         
         return result
 
+    def stop(self):
+        self.is_working = False
+
     def run(self):
         self.is_working = True
         self.signals.task_started.emit()
@@ -201,6 +202,12 @@ class MovieListWorker(QRunnable):
         popular_movies = self.tmdb_movies.popular(page=1)["results"]
         self.max_count = len(popular_movies)
         for movie_data in popular_movies:
+            if not self.is_working:
+                print("Download process stopped")
+                break
+
+            print("Downloading", movie_data["title"])
+            time.sleep(1)
             datetime_obj = datetime.strptime(movie_data.get("release_date"), "%Y-%m-%d")
 
             movie_data = {
@@ -213,7 +220,15 @@ class MovieListWorker(QRunnable):
             }
 
             self.current_count += 1
-            self.signals.movie_data_downloaded.emit(movie_data)
+
+            try:
+                self.signals.movie_data_downloaded.emit(movie_data)
+            except RuntimeError:
+                pass
         
         self.is_working = False
-        self.signals.task_finished.emit()
+
+        try:
+            self.signals.task_finished.emit()
+        except RuntimeError: 
+            pass
