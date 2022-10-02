@@ -5,7 +5,7 @@ from PySide2.QtQuickControls2 import QQuickStyle
 
 from py_components.resources import Resources
 from py_components.movie_list import MovieList, MovieListProxy
-
+from py_components.movie_details import MovieDetails
 
 APP_ROOT = os.path.dirname(__file__)
 MAIN_QML = os.path.join(APP_ROOT, "main.qml")
@@ -32,6 +32,10 @@ class TMDB:
         self.movie_list_proxy = MovieListProxy()
         self.movie_list_proxy.setSourceModel(self.movie_list)
         self.context.setContextProperty("MovieListProxy", self.movie_list_proxy)
+
+        # Movie details view
+        self.movie_details = MovieDetails()
+        self.context.setContextProperty("MovieDetails", self.movie_details)
 
         # load main.qml
         self.engine.load(MAIN_QML)

@@ -4,6 +4,6 @@ import "custom_widgets"
 
 Item{
     TitleText{
-        text: "Movie Details"
+        text: MovieDetails.runtime
     }
 }
