@@ -13,6 +13,7 @@ tmdb.REQUESTS_TIMEOUT = 5
 class MovieList(QAbstractListModel):
     DataRole = Qt.UserRole
     download_progress_changed = Signal()
+    movie_genres = tmdb.Genres().movie_list()["genres"]
 
     def __init__(self):
         super().__init__()
@@ -21,7 +22,7 @@ class MovieList(QAbstractListModel):
         self.job_pool.setMaxThreadCount(1)
         self.movie_list_worker = MovieListWorker()
 
-        self._movie_genres = tmdb.Genres().movie_list()["genres"]
+        
 
         self._movies = []
         self._fetch_movies()
@@ -72,7 +73,7 @@ class MovieList(QAbstractListModel):
         return self.movie_list_worker.current_count
     
     def _get_genre_list(self):
-        return [i["name"] for i in self._movie_genres]
+        return [i["name"] for i in self.movie_genres]
 
     # Python property for QML item types
     # name           Property type      getter method   optional setter    signal
@@ -97,6 +98,10 @@ class MovieListProxy(QSortFilterProxyModel):
     
     def filterAcceptsRow(self, source_row, source_parent):
         movie_data = self.sourceModel().movies[source_row]
+
+        if self._genre:
+            pass
+
         return self._filter.lower() in movie_data["title"].lower()
     
     def _get_current_genre(self):
@@ -107,6 +112,8 @@ class MovieListProxy(QSortFilterProxyModel):
             self._genre = None
         else:
             self._genre = new_genre
+
+        self.invalidateFilter()
         self.genre_changed.emit()
 
     current_genre = Property(str, _get_current_genre, _set_current_genre, notify=genre_changed)
@@ -130,6 +137,19 @@ class MovieListWorker(QRunnable):
         self.max_count = 0
         self.current_count = 0
 
+    def _get_genres(id_list):
+        if not id_list:
+            return []
+
+        result = []
+        for id in id_list:
+            for genre_data in MovieList.movie_genres:
+                if genre_data["id"] == id:
+                    result.append(genre_data["name"])
+                    break
+        
+        return result
+
     def run(self):
         self.is_working = True
         self.signals.task_started.emit()
@@ -145,7 +165,7 @@ class MovieListWorker(QRunnable):
                 "date": datetime_obj,
                 "vote_average": int(movie_data.get("vote_average") * 10),
                 "poster": get_poster(movie_data.get("poster_path")),
-                "genres": []
+                "genres": self._get_genres(movie_data.get("genre_ids"))
             }
 
             self.current_count += 1
