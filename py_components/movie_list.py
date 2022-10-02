@@ -100,7 +100,7 @@ class MovieListProxy(QSortFilterProxyModel):
         movie_data = self.sourceModel().movies[source_row]
 
         if self._genre:
-            pass
+            return (self._filter.lower() in movie_data["title"].lower()) and (self._genre in movie_data["genres"])
 
         return self._filter.lower() in movie_data["title"].lower()
     
@@ -137,7 +137,7 @@ class MovieListWorker(QRunnable):
         self.max_count = 0
         self.current_count = 0
 
-    def _get_genres(id_list):
+    def _get_genres(self, id_list):
         if not id_list:
             return []
 
